@@ -1,0 +1,12 @@
+function [imgList] = getElementPictures(category)
+
+imgList = zeros(128,128,3,40);
+
+for elementIndex = 1:40
+    elementName = num2str(elementIndex);
+    imgList(:,:,:, elementIndex) = imread(category + "\" + elementName + ".png");
+end
+imgList = imgList/255;
+
+end
+
