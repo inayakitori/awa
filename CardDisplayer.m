@@ -1,10 +1,10 @@
 function CardDisplayer
-skin = "HOMESTUCK3downscaled";
+skin = "Fish";
 deck = "deck2";
 cardCount = 40;
 
 folder = "cards\" + skin + "\" + deck;
-cards = zeros(1643, 1643, 3, 40);
+cards = zeros(1653, 1653, 3, 40);
 randomList = randperm(cardCount);
 cardList = randomList(1:3);
 

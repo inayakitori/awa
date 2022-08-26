@@ -1,10 +1,10 @@
 
 elementSize = 256;
-cardSize = [ceil( elementSize * (5 + sqrt(2))) 0];
+cardSize = [ceil( elementSize * (5 + sqrt(2))) 0] + 10;
 cardSize(2) = cardSize(1);
 backgroundColor = [255, 235, 205]/255;
-skin = "HOMESTUCK3downscaled";
-deck = "deck1";
+skin = "Fish";
+deck = "deck2";
 
 cards = zeros(uint16(cardSize(1)), uint16(cardSize(2)), 3, 40);
 elementPictures = getElementPictures(skin, elementSize);
@@ -48,11 +48,20 @@ for cardIndex = 1:40
         cards(startPoint(1) : endPoint(1),startPoint(2) : endPoint(2), :, cardIndex) = rotatedElement;
 
     end 
+    
+    for i = 1 : cardSize(1)
+        for j = 1: cardSize(2)
+            if(all(cards(i,j,:,cardIndex)== 0))
+                cards(i,j,:,cardIndex) = backgroundColor;
+            end
+        end
+    end
+
+    if(mod(cardIndex,5) == 0)
+        disp("Creating cards:" + cardIndex + "/" + 40);
+    end
 end
 
-for c = 1:3
-    cards(:,:,c,:) = (cards(:,:,c,:) < 0.05) .* backgroundColor(c) + (cards(:,:,c,:) >= 0.05) .* cards(:,:,c,:);
-end
 
 
 folder = "cards\" + skin + "\" + deck;
@@ -60,10 +69,13 @@ if ~exist(folder, 'dir')
    mkdir(folder)
 end
 
-for cardIndex = 1:3
+for cardIndex = 1:40
     card = cards(:,:,:,cardIndex);
     finalisedCard = imresize(card, 4, 'bicubic');
     imwrite(finalisedCard, folder + "\" + num2str(cardIndex) + ".png");
+    if(mod(cardIndex,5) == 0)
+        disp("Writing cards:" + cardIndex + "/" + 40);
+    end
 end
 
 subplot(1,3,1), imshow(cards(:,:,:,1))
